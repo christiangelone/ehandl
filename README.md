@@ -1,6 +1,11 @@
 # EHandl
 
-### A ruby gem for hadling exceptions
+### A ruby gem for handling exceptions
+
+```ruby
+  require 'ehandl'
+  include EHandl
+```
 
 ## Success/Failure Handling
 
