@@ -12,7 +12,7 @@
 ```ruby
 obtained = ResultCase.new(proc {2 / 0}) do |result|
   result.success do |value|
-    puts "The operation succeed: #{ex.message}"
+    puts "The operation succeed: #{value}"
   end
   result.failure do |ex|
     puts "The operation failed because: #{ex.message}"
