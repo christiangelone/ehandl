@@ -13,35 +13,36 @@ class TestEhandl < Test::Unit::TestCase
     obtained = ResultCase.new(proc {2 + 2}) do |result|
       result.success do |value|
         assert_equal(4,value)
-        return value + 3
       end
       result.failure do |ex|
         assert_true(false, ['should not execute!'])
-        return :imposible
       end
     end
-    assert_equal(7,obtained)
+    #p obtained
+    assert_equal(ResultCase,obtained.class)
   end
 
   def test_failure
     obtained = ResultCase.new(proc {2 / 0}) do |result|
       result.success do |value|
         assert_true(false, ['should not execute!'])
-        return :imposible
       end
       result.failure do |ex|
-        assert_not_nil ex
-        return :infinity
+        assert_equal(ZeroDivisionError,ex.class)
       end
     end
-    assert_equal(:infinity,obtained)
+    #p obtained
+    assert_equal(ResultCase,obtained.class)
   end
 
   class MyException < Exception
+    def initialize msg
+      super(msg)
+    end
   end
 
   def test_exception_handling
-    ExceptionHandling.new({
+    obtained = ExceptionHandling.new({
       MyException => proc { |ex|
         assert_true(ex.is_a?(MyException))
       }
@@ -49,26 +50,34 @@ class TestEhandl < Test::Unit::TestCase
       assert_true(false)
       p ex.message
     }) do
-      raise MyException.new
-      return :not_returned
+      raise MyException.new 'My Boom!'
+      :not_returned
     end
+    #p obtained
+    assert_equal(ExceptionHandling,obtained.class)
+    assert_equal(obtained.value.message,'My Boom!')
   end
 
   def test_exception_handling_default
-    ExceptionHandling.new({}, proc { |ex|
+    obtained = ExceptionHandling.new({}, proc { |ex|
       assert_equal('Boom!', ex.message)
     }) do
       raise Exception.new 'Boom!'
-      return :not_returned
+      :not_returned
     end
+    #p obtained
+    assert_equal(ExceptionHandling,obtained.class)
+    assert_equal(obtained.value.message,'Boom!')
   end
 
   def test_exception_handling_no_exception
     obtained = ExceptionHandling.new({}, proc { |ex|
       assert_equal('Boom!', ex.message)
     }) do
-      return 4 + 4
+      2 + 2
     end
-    assert_equal(8, obtained)
+    #p obtained
+    assert_equal(ExceptionHandling,obtained.class)
+    assert_equal(4,obtained.value)    
   end
 end

@@ -31,29 +31,31 @@ module EHandl
 
     def initialize(expr)
       begin
-        result = expr.call
-        yield(Success.new(result))
+        @result = expr.call
+        yield(Success.new(@result))
       rescue Exception => ex
         @result = ex
-        yield(Failure.new(ex))
+        yield(Failure.new(@result))
       end
     end
   end
 
   class ExceptionHandling
-    def initialize handlers, default
-      @ret = nil
+    def initialize handlers, default_handler
       begin 
-        @ret = yield()
+        @value = yield()
       rescue Exception => ex
+        @value = ex
         if(handlers[ex.class].nil?)
-          default.call(ex)
+          default_handler.call(ex)
         else
           handlers[ex.class].call(ex)
         end
       end
-      @ret
+      @value
     end
+    
+    attr_reader :value
   end
 
   def ehandl_included?
