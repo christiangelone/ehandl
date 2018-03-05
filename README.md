@@ -3,8 +3,10 @@
 
 ## Install
 
+```
   ~$ gem install ehandl
-  
+```
+
 ## Usage
 
 ```ruby
