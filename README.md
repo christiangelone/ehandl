@@ -4,7 +4,7 @@
 ## Install
 
 ```
-  ~$ gem install ehandl
+~$ gem install ehandl
 ```
 
 ## Usage
