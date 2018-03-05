@@ -1,12 +1,16 @@
 # EHandl
-
 ### A ruby gem for handling exceptions
+
+## Install
+
+  ~$ gem install ehandl
+  
+## Usage
 
 ```ruby
   require 'ehandl'
   include EHandl
 ```
-
 ## Success/Failure Handling
 
 ```ruby
